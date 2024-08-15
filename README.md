@@ -1,2 +1,1 @@
-# Spring_MVC_Mybatis_Board
-Spring_MVC_Mybatis_Board
+# Spring, Mybatis, jsp, ajax 게시판 연습
