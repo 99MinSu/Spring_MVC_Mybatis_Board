@@ -3,6 +3,8 @@ package com.mycom.myapp.board.service;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import com.mycom.myapp.board.dao.BoardDao;
 import com.mycom.myapp.board.dto.BoardDto;
@@ -57,6 +59,7 @@ public class BoardServiceImpl implements BoardService{
 	}
 
 	@Override
+	@Transactional
 	public BoardResultDto detailBoard(BoardParamDto boardParamDto) {
 		
 		BoardResultDto boardResultDto = new BoardResultDto();
@@ -71,9 +74,17 @@ public class BoardServiceImpl implements BoardService{
 			if( userReadCnt == 0) { // 현 사용자가 현 게시글을 처음 조회
 				// board_user_read 에 insert (현 게시글, 현 사용자)
 				boardDao.insertBoardUserRead(boardParamDto.getBoardId(), boardParamDto.getUserSeq());
+				
+				// transaction test
+//				String s = null;
+//				s.length();
+				
 				// 현재 게시글의 조회 수를 +1
 				boardDao.updateBoardReadCount(boardParamDto.getBoardId());
 			}
+			// #3 예외 발생 없이 테스트
+			// 아래의 코드는 예외가 발생하지 않아도 무조건 rollback
+//			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
 			
 			BoardDto boardDto = boardDao.detailBoard(boardParamDto);
 			// 글쓴이와 보는이가 같은 지 여부
@@ -87,6 +98,14 @@ public class BoardServiceImpl implements BoardService{
 		}catch(Exception e) {
 			e.printStackTrace();
 			boardResultDto.setResult("fail");
+			
+			// #1 RuntimeException 객체를 상위 호출자에게 전달
+			// 정상적인 process 흐름이 방해된다.
+//			throw new RuntimeException("detailBoard() error");
+			
+			// #2 TransactionAspectSupport
+			// 정상적인 process 흐름이 진행된다.
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
 		}
 
 		return boardResultDto;
