@@ -25,6 +25,11 @@ public class BoardServiceImpl implements BoardService{
 	}
 	@Override
 	public BoardResultDto listBoard(BoardParamDto boardParamDto) {
+		
+		// GlobalExceptionHandler 테스트 코드
+//		String s = null;
+//		s.length();
+		
 		BoardResultDto boardResultDto = new BoardResultDto();
 		try {
 			List<BoardDto> list = boardDao.listBoard(boardParamDto);

@@ -221,12 +221,16 @@
         let response = await fetch(url + urlParams);
         let data = await response.json();
         
+        console.log(data);
+        
         if( data.result == "success" ){ // 게시판 페이지 이동
             makeListHtml(data.list);
             TOTAL_LIST_ITEM_COUNT = data.count;
             addPagination();
         }else if( data.result == "fail" ){
             alert("글 조회과정에서 오류가 발생했습니다.");
+        }else if( data.result == "exception"){ // 백엔드 GlobalExceptionHandler 대응 코드
+        	alert("예외 발생");
         }
     }
     
@@ -283,6 +287,8 @@
         
         }else if( data.result == "fail" ){
             alert("글 상세 조회 과정에서 오류가 발생했습니다.");
+        }else if( data.result == "exception"){
+        	alert("예외 발생");
         }
     }
     
@@ -364,6 +370,8 @@
             listBoard();
         }else if( data.result == "fail" ){
             alert("글 수정 과정에서 오류가 발생했습니다.");
+        }else if( data.result == "exception"){
+        	alert("예외 발생");
         }
     }
     
@@ -378,6 +386,8 @@
             listBoard();
         }else if( data.result == "fail" ){
             alert("글 삭제 과정에서 오류가 발생했습니다.");
+        }else if( data.result == "exception"){
+        	alert("예외 발생");
         }
     }
 </script>
