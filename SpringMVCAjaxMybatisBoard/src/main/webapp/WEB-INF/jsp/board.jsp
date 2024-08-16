@@ -146,7 +146,7 @@
 </div>
 <script src="/assets/js/util.js"></script>
 <script>
-    let LIST_ROW_COUNT = 10; // 한 페이지에 10개씩
+    let LIST_ROW_COUNT = 10; // 판 페이지에 10개 로우
     let OFFSET = 0;
     let SEARCH_WORD = '';
     
@@ -262,9 +262,15 @@
             }
         } );
     }
-
+    
     function addPagination(){
-    	function makePaginationHtml(LIST_ROW_COUNT, PAGE_LINK_COUNT, CURRENT_PAGE_INDEX, TOTAL_LIST_ITEM_COUNT, "paginationWrapper");
+        makePaginationHtml(LIST_ROW_COUNT, PAGE_LINK_COUNT, CURRENT_PAGE_INDEX, TOTAL_LIST_ITEM_COUNT, "paginationWrapper");
+    }
+        
+    function movePage(pageIndex){
+    	OFFSET = (pageIndex - 1) * LIST_ROW_COUNT;
+    	CURRENT_PAGE_INDEX = pageIndex;
+    	listBoard();
     }
     
     async function detailBoard(boardId) {
