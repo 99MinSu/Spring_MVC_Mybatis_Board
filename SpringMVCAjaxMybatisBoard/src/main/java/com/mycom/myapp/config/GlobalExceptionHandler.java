@@ -5,14 +5,14 @@ import java.util.Map;
 
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 // 개별 Controller 에서 처리하지 않는 예외를 일괄 처리
 // 에러 페이지 (jsp) 대신 예외가 발생했음을 json 으로 내려준다.
 // 응답은 다른 jsp <-> backEnd dto (board.jsp 일 경우 BoardResultDto) 에 대응하도록 응답 구성 (result:success...)
 // client 와 상호 약속된 예외 코드 체계를 통해서 보다 다양한 예외 대응 처리 가능하게 할 수 있다.
 @ControllerAdvice
-@RestController // json 응답
+@ResponseBody // json 응답
 public class GlobalExceptionHandler {
 	
 	@ExceptionHandler(Exception.class)
