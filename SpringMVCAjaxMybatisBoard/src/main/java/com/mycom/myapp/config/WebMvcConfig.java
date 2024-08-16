@@ -15,16 +15,20 @@ public class WebMvcConfig implements WebMvcConfigurer{
 	
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(loginInterceptor)
+        .addPathPatterns("/**")
+        .excludePathPatterns(
+            "/",
+            "/index.html",
+            "/favicon.ico",
+            "/assets/**", 
+            "/pages/login",   // login 페이지 이동은 제외 
+            "/pages/user",   // user 페이지 이동은 제외 
+            "/auth/**",
+            "/users/**"
+        );
+        
 //		registry.addInterceptor(loginInterceptor)
-//				.addPathPatterns("/**")
-//				.excludePathPatterns(
-//					"/",
-//					"/index.html",
-//					"/pages/login", 
-//					"/pages/user"
-//				);
-		
-		registry.addInterceptor(loginInterceptor)
-				.addPathPatterns("/pages/board/**");
+//				.addPathPatterns("/pages/board/**");
 	}
 }

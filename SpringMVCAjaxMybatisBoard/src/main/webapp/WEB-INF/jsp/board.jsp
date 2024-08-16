@@ -215,10 +215,17 @@
             });
         }
     }
+    
     async function listBoard() {
+    	let fetchOptions = {
+    		headers :{
+    			'ajax': 'true'
+    		}
+    	}
+    	
         let url = "/boards/list"
         let urlParams = "?limit=" + LIST_ROW_COUNT + "&offset=" + OFFSET + "&searchWord=" + SEARCH_WORD;
-        let response = await fetch(url + urlParams);
+        let response = await fetch(url + urlParams,fetchOptions);
         let data = await response.json();
         
         console.log(data);
@@ -231,6 +238,8 @@
             alert("글 조회과정에서 오류가 발생했습니다.");
         }else if( data.result == "exception"){ // 백엔드 GlobalExceptionHandler 대응 코드
         	alert("예외 발생");
+        }else if( data.result == "login"){
+        	window.location.href = "/pages/login"
         }
     }
     
@@ -278,8 +287,14 @@
     }
     
     async function detailBoard(boardId) {
+    	let fetchOptions = {
+       		headers :{
+       			'ajax': 'true'
+       		}
+       	}
+    	
         let url = "/boards/detail/" + boardId
-        let response = await fetch(url);
+        let response = await fetch(url,fetchOptions);
         let data = await response.json();
         
         if( data.result == "success" ){ // 게시판 페이지 이동
@@ -289,6 +304,8 @@
             alert("글 상세 조회 과정에서 오류가 발생했습니다.");
         }else if( data.result == "exception"){
         	alert("예외 발생");
+        }else if( data.result == "login"){
+        	window.location.href = "/pages/login"
         }
     }
     
@@ -325,6 +342,7 @@
     
     
     async function insertBoard() {
+    	
         let urlParams = new URLSearchParams({
             title: document.querySelector("#titleInsert").value,
             content: document.querySelector("#contentInsert").value
@@ -334,8 +352,12 @@
         
         let fetchOptions = {
             method: 'POST',
-            body: urlParams
+            body: urlParams,
+       		headers :{
+       			'ajax': 'true'
+       		}
         }
+        
         let response = await fetch(url, fetchOptions);
         let data = await response.json();
         
@@ -344,6 +366,8 @@
             listBoard();
         }else if( data.result == "fail" ){
             alert("글 등록 과정에서 오류가 발생했습니다.");
+        }else if( data.result == "login"){
+        	window.location.href = "/pages/login"
         }
     }
     
@@ -360,7 +384,10 @@
         
         let fetchOptions = {
             method: 'POST',
-            body: urlParams
+            body: urlParams,
+       		headers :{
+       			'ajax': 'true'
+       		}
         }
         let response = await fetch(url, fetchOptions);
         let data = await response.json();
@@ -372,13 +399,20 @@
             alert("글 수정 과정에서 오류가 발생했습니다.");
         }else if( data.result == "exception"){
         	alert("예외 발생");
+        }else if( data.result == "login"){
+        	window.location.href = "/pages/login"
         }
     }
     
     async function deleteBoard() {
+    	let fetchOptions = {
+       		headers :{
+       			'ajax': 'true'
+       		}
+       	}
         let boardId = document.querySelector("#detailBoardModal").getAttribute("data-boardId");
         let url = "/boards/delete/" + boardId;
-        let response = await fetch(url);
+        let response = await fetch(url,fetchOptions);
         let data = await response.json();
         
         if( data.result == "success" ){ // 게시판 페이지 이동
@@ -388,6 +422,8 @@
             alert("글 삭제 과정에서 오류가 발생했습니다.");
         }else if( data.result == "exception"){
         	alert("예외 발생");
+        }else if( data.result == "login"){
+        	window.location.href = "/pages/login"
         }
     }
 </script>
