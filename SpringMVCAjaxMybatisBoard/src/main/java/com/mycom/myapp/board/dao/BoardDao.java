@@ -3,6 +3,7 @@ package com.mycom.myapp.board.dao;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import com.mycom.myapp.board.dto.BoardDto;
 import com.mycom.myapp.board.dto.BoardParamDto;
@@ -20,4 +21,9 @@ public interface BoardDao {
 	int insertBoard(BoardDto boardDto);
 	int updateBoard(BoardDto boardDto);
 	int deleteBoard(int boardId);
+	
+	// 조회수 처리
+	int countBoardUserRead(BoardParamDto boardParamDto);
+	int insertBoardUserRead(@Param("boardId") int boardId, @Param("userSeq") int userSeq);
+	int updateBoardReadCount(int boardId);
 }

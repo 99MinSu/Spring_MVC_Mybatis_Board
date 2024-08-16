@@ -58,8 +58,23 @@ public class BoardServiceImpl implements BoardService{
 
 	@Override
 	public BoardResultDto detailBoard(BoardParamDto boardParamDto) {
+		
 		BoardResultDto boardResultDto = new BoardResultDto();
+		
 		try {
+			// 조회수
+			int userReadCnt = boardDao.countBoardUserRead(boardParamDto);
+			System.out.println("boardId : " + boardParamDto.getBoardId());
+			System.out.println("userSeq : " + boardParamDto.getUserSeq());
+			System.out.println("userReadCnt " + userReadCnt);
+			
+			if( userReadCnt == 0) { // 현 사용자가 현 게시글을 처음 조회
+				// board_user_read 에 insert (현 게시글, 현 사용자)
+				boardDao.insertBoardUserRead(boardParamDto.getBoardId(), boardParamDto.getUserSeq());
+				// 현재 게시글의 조회 수를 +1
+				boardDao.updateBoardReadCount(boardParamDto.getBoardId());
+			}
+			
 			BoardDto boardDto = boardDao.detailBoard(boardParamDto);
 			// 글쓴이와 보는이가 같은 지 여부
 			if( boardDto.getUserSeq() == boardParamDto.getUserSeq()) { // controller 에서 session 으로부터 얻어서 보내준다.
@@ -76,6 +91,7 @@ public class BoardServiceImpl implements BoardService{
 
 		return boardResultDto;
 	}
+	
 	@Override
 	public BoardResultDto insertBoard(BoardDto boardDto) {
 		
