@@ -146,9 +146,13 @@
 </div>
 <script src="/assets/js/util.js"></script>
 <script>
-    let LIST_ROW_COUNT = 10;
+    let LIST_ROW_COUNT = 10; // 한 페이지에 10개씩
     let OFFSET = 0;
     let SEARCH_WORD = '';
+    
+    let PAGE_LINK_COUNT = 10; // Pagination Button 수
+    let TOTAL_LIST_ITEM_COUNT = 0; // BackEnd 에서 계산된 값을 받아서 저장
+    let CURRENT_PAGE_INDEX = 1;
     
     window.onload = function(){
         
@@ -219,7 +223,8 @@
         
         if( data.result == "success" ){ // 게시판 페이지 이동
             makeListHtml(data.list);
-            console.log(data.count);
+            TOTAL_LIST_ITEM_COUNT = data.count;
+            addPagination();
         }else if( data.result == "fail" ){
             alert("글 조회과정에서 오류가 발생했습니다.");
         }
@@ -256,6 +261,10 @@
                 detailBoard(boardId);
             }
         } );
+    }
+
+    function addPagination(){
+    	function makePaginationHtml(LIST_ROW_COUNT, PAGE_LINK_COUNT, CURRENT_PAGE_INDEX, TOTAL_LIST_ITEM_COUNT, "paginationWrapper");
     }
     
     async function detailBoard(boardId) {
